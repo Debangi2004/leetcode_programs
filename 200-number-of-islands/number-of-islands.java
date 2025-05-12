@@ -27,6 +27,7 @@ private void DFSMarking(int i, int j) {
     DFSMarking(i + 1, j);
     DFSMarking(i - 1, j);
     DFSMarking(i, j + 1);
-    DFSMarking(i, j - 1);  
+    DFSMarking(i, j - 1); 
+     
 }
 }
