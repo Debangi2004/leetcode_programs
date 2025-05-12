@@ -12,10 +12,12 @@ public int numIslands(char[][] grid) {
     m = g[0].length;
     for (int i = 0; i < n; i++){
         for (int j = 0; j < m; j++)
+        {
             if (g[i][j] == '1') {
                 DFSMarking(i, j);
                 count++;
             }
+        }
     }    
     return count;
 }
