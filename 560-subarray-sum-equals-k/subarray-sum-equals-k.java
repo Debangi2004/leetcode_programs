@@ -1,20 +1,23 @@
 class Solution {
-    public int subarraySum(int[] arr, int k) {
-        int n = arr.length; // size of the given array.
-        int cnt = 0; // Number of subarrays:
-
-        for (int i = 0 ; i < n; i++) { // starting index i
-            int sum = 0;
-            for (int j = i; j < n; j++) { // ending index j
-                // calculate the sum of subarray [i...j]
-                // sum of [i..j-1] + arr[j]
-                sum += arr[j];
-
-                // Increase the count if sum == k:
-                if (sum == k)
-                    cnt++;
-            }
+    public int subarraySum(int[] nums, int k) {
+        HashMap<Integer,Integer>map = new HashMap<>();
+        int count = 0;
+        int n  = nums.length;
+        int ps[] = new int[n];
+        ps[0]=nums[0];
+        for(int i =1;i<n;i++){
+            ps[i] = ps[i-1]+nums[i];
         }
-        return cnt;
+        for(int j =0;j<n;j++){
+            if(ps[j]==k){
+                count++;
+            }
+            int val = ps[j]-k;
+            if(map.containsKey(val)){
+                count+=map.get(val);
+            }
+            map.put(ps[j],map.getOrDefault(ps[j],0)+1);
+        }
+        return count;
     }
 }
