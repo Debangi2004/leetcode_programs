@@ -8,7 +8,8 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
-class Solution {ListNode middle(ListNode head){
+class Solution {
+    ListNode middle(ListNode head){
         ListNode slow = head;
         ListNode fast = head;
         
@@ -20,18 +21,14 @@ class Solution {ListNode middle(ListNode head){
     }
     
     ListNode reverse(ListNode head){
-        ListNode curr = head;
-        ListNode prev = null;
-        ListNode forw = null;
-        
-        while(curr != null){
-            forw = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = forw;
-        }
-        return prev;
-    }
+    if(head == null || head.next == null) return head;
+
+    ListNode newHead = reverse(head.next);
+    head.next.next = head;
+    head.next = null;
+    return newHead;
+}
+
 
     public void reorderList(ListNode head) {
         if(head == null || head.next == null)
