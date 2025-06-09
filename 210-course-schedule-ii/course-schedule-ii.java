@@ -8,11 +8,9 @@ class Solution {
             adj.add(new ArrayList<>());
         }
 
-        // Step 2: Build the graph from prerequisites
-        for (int[] pair : prerequisites) {
-            int course = pair[0];
-            int prereq = pair[1];
-            adj.get(prereq).add(course); // prereq -> course
+        // Step 2: Build the grprerequisitesaph from prerequisites
+        for (int i =0;i<prerequisites.length;i++) {
+            adj.get(prerequisites[i][1]).add(prerequisites[i][0]); // prereq -> course
         }
 
         // Step 3: Compute in-degrees of all nodes
