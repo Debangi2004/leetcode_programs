@@ -1,38 +1,36 @@
-import java.util.*;
-
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
         int V = graph.length;
-        List<List<Integer>> adjRev = new ArrayList<>();
-        
-        // Step 1: Create reverse graph
+        List<List<Integer>> reverseGraph = new ArrayList<>();
         for (int i = 0; i < V; i++) {
-            adjRev.add(new ArrayList<>());
+            reverseGraph.add(new ArrayList<>());
         }
 
         int[] indegree = new int[V];
 
-        for (int i = 0; i < V; i++) {
-            for (int neighbor : graph[i]) {
-                adjRev.get(neighbor).add(i); // reverse the edge
-                indegree[i]++;               // count outgoing edges in original graph
+        // Step 1: Reverse the graph and compute indegrees
+        for (int u = 0; u < V; u++) {
+            for (int v : graph[u]) {
+                reverseGraph.get(v).add(u);
+                indegree[u]++;
             }
         }
 
-        // Step 2: Kahn’s algorithm
+        // Step 2: Add all terminal nodes (indegree 0) to the queue
         Queue<Integer> q = new LinkedList<>();
         for (int i = 0; i < V; i++) {
             if (indegree[i] == 0) {
-                q.add(i); // terminal nodes
+                q.add(i);
             }
         }
 
-        List<Integer> safeNodes = new ArrayList<>();
-
+        // Step 3: BFS - Remove safe nodes from the graph
+        boolean[] safe = new boolean[V];
         while (!q.isEmpty()) {
             int node = q.poll();
-            safeNodes.add(node);
-            for (int neighbor : adjRev.get(node)) {
+            safe[node] = true;
+
+            for (int neighbor : reverseGraph.get(node)) {
                 indegree[neighbor]--;
                 if (indegree[neighbor] == 0) {
                     q.add(neighbor);
@@ -40,7 +38,14 @@ class Solution {
             }
         }
 
-        Collections.sort(safeNodes); // sort the safe nodes
-        return safeNodes;
+        // Step 4: Collect all safe nodes
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < V; i++) {
+            if (safe[i]) {
+                result.add(i);
+            }
+        }
+
+        return result;
     }
 }
