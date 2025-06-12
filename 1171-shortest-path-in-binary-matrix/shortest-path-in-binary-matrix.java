@@ -3,7 +3,6 @@ class Solution {
         
         Queue<int[]> q = new LinkedList<>();  
         int n = grid.length; 
-        int m = grid[0].length;
         if (grid[0][0] != 0 || grid[n - 1][n - 1] != 0 || n==0) {
             return -1;
         }
@@ -15,13 +14,12 @@ class Solution {
 
         // Create a distance matrix with initially all the cells marked as
         // unvisited and the source cell as 0. 
-        int[][] dist = new int[n][m]; 
+        int[][] dist = new int[n][n]; 
         for(int i = 0;i<n;i++) {
-            for(int j =0;j<m;j++) {
+            for(int j =0;j<n;j++) {
                 dist[i][j] = (int)(1e9); 
             }
         }
-        dist[0][0] = 1; 
         q.add(new int[]{1, 0, 0}); 
 
         while(!q.isEmpty()) {
@@ -36,12 +34,12 @@ class Solution {
                     int nc = col + c; 
                     
                     // Checking the validity of the cell and updating if dist is shorter.
-                    if(nr >= 0 && nr < n && nc >= 0 && nc < m && grid[nr][nc] ==   0 && dis+1 < dist[nr][nc]) {
+                    if(nr >= 0 && nr < n && nc >= 0 && nc < n && grid[nr][nc] ==   0 && dis+1 < dist[nr][nc]) {
                         dist[nr][nc] = 1 + dis; 
 
                         // Return the distance until the point when
                         // we encounter the destination cell.
-                        if(nr == n - 1 && nc == m - 1){
+                        if(nr == n - 1 && nc == n - 1){
                             return dis + 1;
                         }
 
