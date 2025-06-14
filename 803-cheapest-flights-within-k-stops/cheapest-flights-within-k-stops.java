@@ -43,8 +43,7 @@ class Solution {
         // Iterate through the graph using a queue like in Dijkstra with 
         // popping out the element with min stops first.
         while(!q.isEmpty()) {
-            Tuple it = q.peek(); 
-            q.remove(); 
+            Tuple it = q.poll();
             int stops = it.first; 
             int node = it.second; 
             int cost = it.third; 
