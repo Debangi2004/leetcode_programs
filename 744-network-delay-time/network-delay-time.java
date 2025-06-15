@@ -1,45 +1,47 @@
-import java.util.*;
+class Pair{
+    int first,second;
+    public Pair(int first,int second){
+        this.first=first;
+        this.second=second;
+    }
+}
 
 class Solution {
     public int networkDelayTime(int[][] times, int n, int k) {
-        // Create adjacency list
-        List<List<int[]>> adj = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
-            adj.add(new ArrayList<>());
+        PriorityQueue<Pair> pq=new PriorityQueue<>((x,y) -> x.first-y.first);
+        int m=times.length;
+        int[] dist=new int[n+1];
+        for(int i=0;i<=n;i++){
+                dist[i]=(int)(1e9);
         }
-        for (int[] time : times) {
-            adj.get(time[0]).add(new int[]{time[1], time[2]}); // (destination, weight)
-        }
+        dist[k]=0;
+        pq.add(new Pair(0,k));
+        while(pq.size()!=0){
+            int dis=pq.peek().first;
+            int node=pq.peek().second;
+            pq.remove();
+            if (dis != dist[node]) continue;
 
-        // Dijkstra's algorithm: min-heap based
-        int[] dist = new int[n + 1];
-        Arrays.fill(dist, Integer.MAX_VALUE);
-        dist[k] = 0;
+            for(int i=0;i<times.length;i++){
+               int u  = times[i][0];
+                int v  = times[i][1];
+                int wt = times[i][2];
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]); // (node, time)
-        pq.add(new int[]{k, 0});
+                if (u != node) continue;
 
-        while (!pq.isEmpty()) {
-            int[] curr = pq.poll();
-            int node = curr[0];
-            int time = curr[1];
-
-            for (int[] neighbor : adj.get(node)) {
-                int nextNode = neighbor[0];
-                int weight = neighbor[1];
-
-                if (dist[nextNode] > time + weight) {
-                    dist[nextNode] = time + weight;
-                    pq.add(new int[]{nextNode, dist[nextNode]});
+                if (dis + wt < dist[v]) {         
+                    dist[v] = dis + wt;
+                    pq.add(new Pair(dist[v], v));
                 }
             }
         }
-
-        int maxTime = 0;
+       int ans = 0;
         for (int i = 1; i <= n; i++) {
-            if (dist[i] == Integer.MAX_VALUE) return -1;
-            maxTime = Math.max(maxTime, dist[i]);
+            //If the node is unreachable return -1
+            if (dist[i] == (int)(1e9)) return -1;        
+            ans = Math.max(ans, dist[i]);
         }
-        return maxTime;
+        return ans;
+
     }
 }
