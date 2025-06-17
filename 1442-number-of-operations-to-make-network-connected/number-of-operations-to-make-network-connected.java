@@ -44,9 +44,7 @@ class Solution {
         for (int[] edge : connections) {
             int u = edge[0];
             int v = edge[1];
-            if (ds.find(u) != ds.find(v)) {
-                ds.union(u, v);
-            }
+            ds.union(u, v);
         }
         int components = 0;
         for (int i = 0; i < n; i++) {
