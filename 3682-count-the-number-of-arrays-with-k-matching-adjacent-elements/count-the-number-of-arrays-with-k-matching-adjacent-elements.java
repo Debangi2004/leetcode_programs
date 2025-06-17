@@ -1,8 +1,6 @@
 class Solution {
    int mod = (int)1e9+7;
 
-    // Arrays to store factorials and modular inverses
-    static long[] revs = new long[100001]; // Not used in this version
     static int[] f = new int[100001];      // Factorials
 
     // Main function to count good arrays
