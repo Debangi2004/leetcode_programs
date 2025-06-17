@@ -1,5 +1,5 @@
 class Solution {
-   int mod = 1_000_000_007;
+   int mod = (int)1e9+7;
 
     // Arrays to store factorials and modular inverses
     static long[] revs = new long[100001]; // Not used in this version
