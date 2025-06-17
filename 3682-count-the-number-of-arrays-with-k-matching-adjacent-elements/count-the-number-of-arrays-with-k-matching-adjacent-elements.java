@@ -1,18 +1,9 @@
 class Solution {
    int mod = (int)1e9+7;
-
-    static int[] f = new int[100001];      // Factorials
-
-    // Main function to count good arrays
+    static int[] f = new int[100001];      
     public int countGoodArrays(int n, int m, int k) {
-        // Base case: factorial[0] = 1
         if (f[0] == 0)
             f[0] = 1;
-
-        // Formula:
-        // m               --> choose value for the first element
-        // pow(m-1, n-1-k) --> number of ways to keep same value (for n-1-k positions)
-        // C(n-1, n-1-k)   --> choose positions to remain the same among (n-1)
         long res = m * pow(m - 1, n - 1 - k) % mod * C(n - 1, n - 1 - k) % mod;
         
         return (int) res;
