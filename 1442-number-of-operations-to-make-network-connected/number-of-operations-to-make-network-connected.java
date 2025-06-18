@@ -42,9 +42,7 @@ class Solution {
 
         DisjointSet ds = new DisjointSet(n);
         for (int[] edge : connections) {
-            int u = edge[0];
-            int v = edge[1];
-            ds.union(u, v);
+            ds.union(edge[0], edge[1]);
         }
         int components = 0;
         for (int i = 0; i < n; i++) {
