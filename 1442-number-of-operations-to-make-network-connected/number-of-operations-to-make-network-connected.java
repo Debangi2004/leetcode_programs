@@ -38,11 +38,16 @@ class DisjointSet {
 class Solution {
 
     public int makeConnected(int n, int[][] connections){
-        if (connections.length < n - 1) return -1;
+
+        int extras=0;
 
         DisjointSet ds = new DisjointSet(n);
         for (int[] edge : connections) {
-            ds.union(edge[0], edge[1]);
+            if (ds.find(edge[0]) == ds.find(edge[1])) {
+                extras++;
+            } else {
+                ds.union(edge[0], edge[1]);
+            }
         }
         int components = 0;
         for (int i = 0; i < n; i++) {
@@ -50,7 +55,7 @@ class Solution {
                 components++;
             }
         }
-        return components - 1;
+        return (extras >= components - 1)? components - 1:-1;
     }
 }
 
