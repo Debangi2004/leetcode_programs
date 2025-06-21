@@ -1,19 +1,14 @@
 class Solution {
-    public int lengthOfLongestSubstring(String str) {
-        if (str.length() == 0)
-            return 0;
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length(), longest = 0;
+        int[] nextIndex = new int[128]; 
 
-        int maxans = 0;  // Changed from Integer.MIN_VALUE
-        for (int i = 0; i < str.length(); i++) {
-            Set<Character> se = new HashSet<>();
-            for (int j = i; j < str.length(); j++) {
-                if (se.contains(str.charAt(j))) {
-                    break;
-                }
-                se.add(str.charAt(j));
-                maxans = Math.max(maxans, j - i + 1); // update max every time
-            }
+        for (int r=0, l=0; r<n; r++) {
+            l = Math.max(nextIndex[s.charAt(r)], l); 
+            longest = Math.max(longest, r - l + 1);
+            nextIndex[s.charAt(r)] = r + 1;
         }
-        return maxans;
+
+        return longest;
     }
 }
