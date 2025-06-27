@@ -10,6 +10,7 @@ class Solution {
             if((r-l+1) - maxfreq > k)
             {
                 hash[s.charAt(l) - 'A']--;
+                maxfreq=0;
                 l++;
             }
             else
