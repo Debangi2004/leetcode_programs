@@ -21,7 +21,15 @@ class Solution {
         Map<String, List<String>> groups = new HashMap<>();
 
         for (String s : strs) {
-            groups.computeIfAbsent(getSignature(s), k -> new ArrayList<>()).add(s);
+            String sig = getSignature(s);
+
+            if (!groups.containsKey(sig)) {
+                groups.put(sig, new ArrayList<>());
+            }
+
+            groups.get(sig).add(s);
+
+            //groups.computeIfAbsent(getSignature(s), k -> new ArrayList<>()).add(s);
         }
 
         result.addAll(groups.values());
