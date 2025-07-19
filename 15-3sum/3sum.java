@@ -2,57 +2,37 @@ import java.util.AbstractList;
 
 class Solution {
     public List<List<Integer>> threeSum(int[] arr) {
-		return new AbstractList<List<Integer>>() {
+		List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(arr);
+        int n = arr.length;
+        for(int i = 0 ;i<n;i++){
+            if(i!=0 && arr[i]==arr[i-1]) continue;
+            
+            int j =i+1;
+            int k = n-1;
 
-			List<List<Integer>> ans;
+            while(j<k){
+                int sum = arr[i]+arr[j]+arr[k];
 
-			@Override
-			public int size() {
-				if (ans == null)
-					ans = createList(arr);
-				return ans.size();
-			}
+                if(sum>0) k--;
+                else if(sum<0) j++;
+                else {
+                    List<Integer> ans = Arrays.asList(arr[i],arr[j],arr[k]);
+                    res.add(ans);
+                    j++;
+                    k--;
 
-			@Override
-			public List<Integer> get(int index) {
-				if (ans == null)
-					ans = createList(arr);
-				return ans.get(index);
-			}
-		};
+                    while(j<k && arr[j]==arr[j-1]) j++;
+                    while(j<k && arr[k]==arr[k+1]) k--;
+
+            
+            }
+            
+            }
+
+        }
+        return res;
 	}
 
-	private List<List<Integer>> createList(int[] arr) {
-		List<List<Integer>> ans = new ArrayList<>();
-		int len = arr.length;
-
-		Arrays.sort(arr);
-		for (int i = 0; i < len - 2 && arr[i] <= 0; ++i) {
-			if (i != 0 && arr[i - 1] == arr[i])
-				continue;
-			twoSum(ans, arr, i + 1, len - 1, -arr[i]);
-		}
-		return ans;
-	}
-
-	private void twoSum(List<List<Integer>> ans, int[] arr, int left, int right, int target) {
-		while (left < right) {
-			int sum = arr[left] + arr[right];
-			if (sum < target) {
-				++left;
-				continue;
-			}
-			if (sum > target) {
-				--right;
-				continue;
-			}
-
-			ans.add(Arrays.asList(-target, arr[left++], arr[right--]));
-
-			while (left <= right && arr[left - 1] == arr[left]) {
-				++left;
-			}
-		}
-	}
 
 }
