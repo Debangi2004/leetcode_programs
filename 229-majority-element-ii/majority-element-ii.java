@@ -9,11 +9,11 @@ class Solution {
 
         for(int i =0;i<n;i++){
             if(count1 == 0 && nums[i] != element2){
-                count1=1;
+                count1++;
                 element1 = nums[i];
             }
             else if(count2 == 0 && nums[i] != element1){
-                count2=1;
+                count2++;
                 element2 = nums[i];
             }
             else if(nums[i] == element1) count1++;
