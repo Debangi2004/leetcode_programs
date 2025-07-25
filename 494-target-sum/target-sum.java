@@ -19,8 +19,8 @@ class Solution {
 
     public int findTargetSumWays(int[] nums, int target) {
         int sum = 0;
-        for (int num : nums)
-            sum += num;
+        for (int i =0;i<nums.length;i++)
+            sum += nums[i];
 
         if ((sum + target) % 2 != 0 || (sum + target) < 0)
             return 0;
