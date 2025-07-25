@@ -2,9 +2,12 @@ class Solution {
     public int count(int[] nums, int n, int target) {
         int[][] t = new int[n + 1][target + 1];
 
-        for (int i = 0; i < n + 1; i++)
-            t[i][0] = 1; // Only one way to make sum 0: pick nothing
+        for (int j = 0; j < target + 1; j++)
+            t[0][j] = 0;
 
+        for (int i = 0; i < n + 1; i++)
+            t[i][0] = 1; 
+        
         for (int i = 1; i < n + 1; i++) {
             for (int j = 0; j < target + 1; j++) {
                 if (nums[i - 1] <= j)
