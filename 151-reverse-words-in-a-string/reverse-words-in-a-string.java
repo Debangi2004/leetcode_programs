@@ -1,17 +1,14 @@
 class Solution {
     public String reverseWords(String s) {
-        // Remove leading/trailing spaces and split by one or more spaces
-        String[] words = s.trim().split("\\s+");
-        
-        // Use StringBuilder for efficient reversal
-        StringBuilder reversed = new StringBuilder();
-        
-        // Add words in reverse order
-        for (int i = words.length - 1; i >= 0; i--) {
-            reversed.append(words[i]);
-            if (i > 0) reversed.append(" ");
+        StringBuilder sb = new StringBuilder();
+        String[] str = s.trim().split("\\s+");
+        int n = str.length;
+        for(int i =n-1;i>=0;i--){
+            sb.append(str[i]);
+            if(i!=0){
+                sb.append(" ");
+            }
         }
-        
-        return reversed.toString();
+        return sb.toString();
     }
 }
