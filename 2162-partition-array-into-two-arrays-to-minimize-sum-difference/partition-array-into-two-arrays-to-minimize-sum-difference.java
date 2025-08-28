@@ -1,68 +1,67 @@
 class Solution {
     public int minimumDifference(int[] nums) {
-        int n = nums.length / 2;
-        int totalSum = 0;
-        for (int num : nums) totalSum += num;
+        int n = nums.length;
+        int total = Arrays.stream(nums).sum();
 
-        int[] left = Arrays.copyOfRange(nums, 0, n);
-        int[] right = Arrays.copyOfRange(nums, n, 2 * n);
+        // Split into two halves
+        int[] left = Arrays.copyOfRange(nums, 0, n / 2);
+        int[] right = Arrays.copyOfRange(nums, n / 2, n);
 
-        // Map: subset size -> list of subset sums
-        Map<Integer, List<Integer>> leftMap = getSubsetSums(left);
-        Map<Integer, List<Integer>> rightMap = getSubsetSums(right);
+        // Generate subset sums by size
+        Map<Integer, List<Integer>> leftSums = generateSums(left);
+        Map<Integer, List<Integer>> rightSums = generateSums(right);
 
-        int minDiff = Integer.MAX_VALUE;
+        int target = total / 2;
+        int ans = Integer.MAX_VALUE;
 
-        for (int size = 0; size <= n; size++) {
-            List<Integer> leftSums = leftMap.get(size);
-            List<Integer> rightSums = rightMap.get(n - size);
-            Collections.sort(rightSums); // Needed for binary search
+        // For each possible size from left half
+        for (int leftSize : leftSums.keySet()) {
+            int rightSize = n / 2 - leftSize;
+            if (!rightSums.containsKey(rightSize)) continue;
 
-            for (int leftSum : leftSums) {
-                int target = totalSum / 2 - leftSum;
+            List<Integer> lList = leftSums.get(leftSize);
+            List<Integer> rList = rightSums.get(rightSize);
 
-                // Binary search for closest sum in rightSums
-                int idx = Collections.binarySearch(rightSums, target);
-                if (idx >= 0) {
-                    int s1 = leftSum + rightSums.get(idx);
-                    int s2 = totalSum - s1;
-                    minDiff = Math.min(minDiff, Math.abs(s1 - s2));
-                } else {
-                    idx = -idx - 1;
+            Collections.sort(rList);
 
-                    // Check both idx and idx - 1 for best approximation
-                    if (idx < rightSums.size()) {
-                        int s1 = leftSum + rightSums.get(idx);
-                        int s2 = totalSum - s1;
-                        minDiff = Math.min(minDiff, Math.abs(s1 - s2));
-                    }
-                    if (idx > 0) {
-                        int s1 = leftSum + rightSums.get(idx - 1);
-                        int s2 = totalSum - s1;
-                        minDiff = Math.min(minDiff, Math.abs(s1 - s2));
-                    }
+            for (int sumLeft : lList) {
+                int need = target - sumLeft;
+
+                // binary search on right sums
+                int idx = Collections.binarySearch(rList, need);
+                if (idx < 0) idx = -idx - 1;
+
+                if (idx < rList.size()) {
+                    int sumRight = rList.get(idx);
+                    int sumChosen = sumLeft + sumRight;
+                    ans = Math.min(ans, Math.abs(total - 2 * sumChosen));
+                }
+
+                if (idx > 0) {
+                    int sumRight = rList.get(idx - 1);
+                    int sumChosen = sumLeft + sumRight;
+                    ans = Math.min(ans, Math.abs(total - 2 * sumChosen));
                 }
             }
         }
-
-        return minDiff;
+        return ans;
     }
 
-    private Map<Integer, List<Integer>> getSubsetSums(int[] arr) {
-        int n = arr.length;
+    private Map<Integer, List<Integer>> generateSums(int[] arr) {
         Map<Integer, List<Integer>> map = new HashMap<>();
+        int n = arr.length;
+        int subsets = 1 << n;
 
-        for (int i = 0; i < (1 << n); i++) {
-            int sum = 0, count = 0;
-            for (int j = 0; j < n; j++) {
-                if ((i & (1 << j)) != 0) {
-                    sum += arr[j];
-                    count++;
+        for (int mask = 0; mask < subsets; mask++) {
+            int sum = 0, bits = 0;
+            for (int i = 0; i < n; i++) {
+                if ((mask & (1 << i)) != 0) {
+                    sum += arr[i];
+                    bits++;
                 }
             }
-            map.computeIfAbsent(count, k -> new ArrayList<>()).add(sum);
+            map.computeIfAbsent(bits, k -> new ArrayList<>()).add(sum);
         }
-
         return map;
     }
 }
