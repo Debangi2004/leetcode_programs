@@ -25,7 +25,6 @@ class Solution {
                 }
             }
         }
-        if(t[n][m]==n) return true;
-        return false;
+        return  t[n][m]==n;
     }
 }
