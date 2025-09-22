@@ -9,43 +9,16 @@
  * }
  */
 class Solution {
-    public ListNode removeNthFromEnd(ListNode head, int N) {
-        if (head == null) {
-            return null;
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode fast = head;
+        ListNode slow = head;
+        for(int i =0;i<n;i++) fast=fast.next;
+        if(fast == null) return head.next;
+        while(fast.next!=null) {
+            fast=fast.next;
+            slow=slow.next;
         }
-        int cnt = 0;
-        ListNode temp = head;
-
-        // Count the number of nodes in the linked list
-        while (temp != null) {
-            cnt++;
-            temp = temp.next;
-        }
-
-        // If N equals the total number of nodes, delete the head
-        if (cnt == N) {
-            ListNode newhead = head.next;
-            head = null;
-            return newhead;
-        }
-
-        // Calculate the position of the node to delete (res)
-        int res = cnt - N;
-        temp = head;
-
-        // Traverse to the node just before the one to delete
-        while (temp != null) {
-            res--;
-            if (res == 0) {
-                break;
-            }
-            temp = temp.next;
-        }
-
-        // Delete the Nth node from the end
-        ListNode delNode = temp.next;
-        temp.next = temp.next.next;
-        delNode = null;
+        slow.next=slow.next.next;
         return head;
     }
 }
