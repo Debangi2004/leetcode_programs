@@ -5,6 +5,8 @@ class Solution {
         for(int num : nums) map.put(num, false);
 
         for(int num : nums){
+            if(map.get(num) == true) continue;
+            map.put(num, true);
             int currLen=1;
             
             int nextNum= num+1;
