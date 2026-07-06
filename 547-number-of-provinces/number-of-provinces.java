@@ -27,7 +27,7 @@ class Solution {
             if(vis[i]==0){
                 count++;
                 dfs(ans,i,vis); 
-            }
+            }  
         }
         return count;
     }
