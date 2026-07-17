@@ -1,52 +1,40 @@
 class Solution {
     public int numEnclaves(int[][] grid) {
-        Queue<int[]> q = new LinkedList<>();
-        int n = grid.length; 
-        int m = grid[0].length; 
-        int vis[][] = new int[n][m];
-        // traverse boundary elements
-        for(int i = 0;i<n;i++) {
-            for(int j = 0;j<m;j++) {
-                // first row, first col, last row, last col 
-                if(i == 0 || j == 0 || i == n-1 || j == m-1) {
-                    // if it is a land then store it in queue
-                    if(grid[i][j] == 1) {
-                        q.add(new int[]{i, j}); 
-                        vis[i][j] = 1; 
-                    }
+        if(grid == null || grid.length == 0 || grid[0].length == 0) return 0;
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        for(int i =0;i<m;i++){
+            if(grid[i][0] == 1) dfs(grid,i,0);
+            if(grid[i][n-1] == 1) dfs(grid,i,n-1);
+        }
+        for(int j =0;j<n;j++){
+            if(grid[0][j] == 1) dfs(grid,0,j);
+            if(grid[m-1][j] == 1) dfs(grid,m-1,j);
+        }
+
+        int count = 0;
+        for(int i =0;i<m;i++){
+            for(int j =0;j<n;j++){
+                if(grid[i][j]==1){
+                    count++;
                 }
             }
         }
-        
-        int delrow[] = {-1, 0, +1, 0};
-        int delcol[] = {0, +1, +0, -1}; 
-        
-        while(!q.isEmpty()) {
-            int point[] = q.poll();
-            int row = point[0];
-            int col = point[1];
-            
-            // traverses all 4 directions
-            for(int i = 0;i<4;i++) {
-                int nrow = row + delrow[i];
-                int ncol = col + delcol[i]; 
-                // check for valid coordinates and for land cell
-                if(nrow >=0 && nrow <n && ncol >=0 && ncol < m 
-                && vis[nrow][ncol] == 0 && grid[nrow][ncol] == 1) {
-                    q.add(new int[]{nrow, ncol});
-                    vis[nrow][ncol] = 1; 
-                }
-            }
-            
-        }
-        int cnt = 0;
-        for(int i = 0;i<n;i++) {
-            for(int j = 0;j<m;j++) {
-                // check for unvisited land cell
-                if(grid[i][j] == 1 & vis[i][j] == 0) 
-                    cnt++; 
-            }
-        }
-        return cnt;
-    } 
+        return count;
+    }
+    public void dfs(int grid[][], int r, int c)
+    {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        if(r<0 || c<0 || r>=m || c>=n || grid[r][c]==0) return;
+
+        grid[r][c]=0;
+        dfs(grid,r+1,c);
+        dfs(grid,r-1,c);
+        dfs(grid,r,c+1);
+        dfs(grid,r,c-1);
+    }
 }
