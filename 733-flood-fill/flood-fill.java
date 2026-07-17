@@ -1,28 +1,21 @@
 class Solution {
-    private void dfs(int row, int col, int[][] ans, int[][] image, int newColor, int delRow[], int delCol[], int iniColor) {
-        // color with new color
-        ans[row][col] = newColor; 
-        int n = image.length;
-        int m = image[0].length; 
-        // there are exactly 4 neighbours
-        for(int i = 0;i<4;i++) {
-            int nrow = row + delRow[i]; 
-            int ncol = col + delCol[i]; 
-            // check for valid coordinate 
-            // then check for same initial color and unvisited pixel
-            if(nrow>=0 && nrow<n && ncol>=0 && ncol < m && 
-            image[nrow][ncol] == iniColor && ans[nrow][ncol] != newColor) {
-                dfs(nrow, ncol, ans, image, newColor, delRow, delCol, iniColor); 
-            }
-        }
+    public void dfs(int[][] image, int r, int c, int oldColor,int newColor){
+        int m = image.length;;
+        int n = image[0].length;
+
+        if(r<0 || c<0 || r>=m || c>=n || image[r][c]!=oldColor) return;
+
+        image[r][c] = newColor;
+        dfs(image, r+1, c, oldColor, newColor);
+        dfs(image, r-1, c, oldColor, newColor);
+        dfs(image, r, c+1, oldColor, newColor);
+        dfs(image, r, c-1, oldColor, newColor);
     }
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        int iniColor = image[sr][sc]; 
-        int[][] ans = image; 
-        // delta row and delta column for neighbours
-        int delRow[] = {-1, 0, +1, 0};
-        int delCol[] = {0, +1, 0, -1}; 
-        dfs(sr, sc, ans, image, color, delRow, delCol, iniColor); 
-        return ans;  
+        int oldColor=image[sr][sc];
+        if(oldColor == color) return image;
+        
+        dfs(image, sr, sc, oldColor, color);
+        return image;
     }
 }
